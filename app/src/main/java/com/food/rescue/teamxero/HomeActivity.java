@@ -19,15 +19,17 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 
-public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback, LocationProvider.LocationCallback {
+public class HomeActivity extends AppCompatActivity implements OnMarkerClickListener, OnMapReadyCallback, LocationProvider.LocationCallback {
 
     private static final String TAG = "HomeActivity";
     private static final int PLACE_PICKER_REQUEST = 1;
@@ -35,6 +37,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private MenuItem mSearchMenuItem;
     private List<Provider> mProviderList;
     private LocationProvider mLocationProvider;
+    private Marker mCurrentLocation;
 
     //com.google.android.gms_9.6.83_(876-133155058)-9683876_minAPI19(x86)(320dpi)_apkmirror.com
     @Override
@@ -106,7 +109,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
                 return true;
             case R.id.refresh_view:
-                // Search new items
+                updateCurrentLocation(mCurrentLocation.getPosition());
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -130,20 +133,25 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void handleNewLocation(Location location) {
         Log.d(TAG, location.toString());
-
-        double currentLatitude = location.getLatitude();
-        double currentLongitude = location.getLongitude();
-        LatLng latLng = new LatLng(currentLatitude, currentLongitude);
-        updateCurrentLocation(latLng);
+        if(mCurrentLocation == null){
+            double currentLatitude = location.getLatitude();
+            double currentLongitude = location.getLongitude();
+            LatLng latLng = new LatLng(currentLatitude, currentLongitude);
+            updateCurrentLocation(latLng);
+        }
     }
 
     private void updateCurrentLocation(LatLng latLng){
         Log.d(TAG, "Current location is "+ latLng.latitude + "  " + latLng.longitude);
-        mMap.addMarker(new MarkerOptions()
+        if(mCurrentLocation != null){
+            mCurrentLocation.remove();
+        }
+        mCurrentLocation = mMap.addMarker(new MarkerOptions()
                 .position(latLng)
                 .title("You location")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 11);
+        mMap.moveCamera(cameraUpdate);
         mMap.animateCamera(cameraUpdate);
 
         new FetchProducts().execute(new SearchTerm(latLng.latitude, latLng.longitude, 5));
@@ -152,11 +160,23 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void updateMarkers(){
         for(Provider provider : mProviderList){
             LatLng latLng = new LatLng(provider.getLocation().getLatitude(), provider.getLocation().getLongitude());
-            mMap.addMarker(new MarkerOptions()
+            Marker marker = mMap.addMarker(new MarkerOptions()
                 .position(latLng)
                 .title(provider.getFirstName() + " " + provider.getLastName())
                 .snippet(provider.getDescription()));
+            marker.setTag(provider);
         }
+        mMap.setOnMarkerClickListener(this);
+    }
+
+    @Override
+    public boolean onMarkerClick(final Marker marker) {
+        // Retrieve the data from the marker.
+        Provider provider = (Provider) marker.getTag();
+        Log.d(TAG, "Provider ID ="+ provider.getFirstName());
+//        Intent intent = new Intent(thi);
+
+        return false;
     }
 
     private class FetchProducts extends AsyncTask<SearchTerm, Void, List<Provider>>{
