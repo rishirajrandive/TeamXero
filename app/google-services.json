@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "199018965055",
+    "firebase_url": "https://teamxero-1474747816573.firebaseio.com",
+    "project_id": "teamxero-1474747816573",
+    "storage_bucket": "teamxero-1474747816573.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:199018965055:android:f08f6620266f2b19",
+        "android_client_info": {
+          "package_name": "com.food.rescue.teamxero"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "199018965055-rc86tar8sbmfr937obn56s24e4vnuc1q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.food.rescue.teamxero",
+            "certificate_hash": "D02C7177E27A8148860AC0B1EA74F2E213DB6C6A"
+          }
+        },
+        {
+          "client_id": "199018965055-u328gf9quuop5dqfbntpnh4ljbbt7h7g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5yYqtX9rX4fE-wqaQCt-DB462JYvqqiU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "199018965055-u328gf9quuop5dqfbntpnh4ljbbt7h7g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
