@@ -36,6 +36,10 @@ public class Provider {
         this.address = address;
     }
 
+    public Provider() {
+
+    }
+
     public String getContact() {
         return contact;
     }
