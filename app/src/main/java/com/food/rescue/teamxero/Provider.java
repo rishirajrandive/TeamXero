@@ -8,6 +8,7 @@ import com.food.rescue.teamxero.pojo.SearchTerm;
  */
 public class Provider {
 
+    private String id;
     private String contact;
     private boolean available;
     private String foodType;
@@ -21,7 +22,8 @@ public class Provider {
     private SearchTerm location;
     private Address address;
 
-    public Provider(String contact, boolean available, String foodType, String quantity, String description, String imageLink, double timestamp, double expiryDate, String firstName, String lastName, SearchTerm location, Address address) {
+    public Provider(String id, String contact, boolean available, String foodType, String quantity, String description, String imageLink, double timestamp, double expiryDate, String firstName, String lastName, SearchTerm location, Address address) {
+        this.id = id;
         this.contact = contact;
         this.available = available;
         this.foodType = foodType;
@@ -38,6 +40,14 @@ public class Provider {
 
     public Provider() {
 
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getContact() {

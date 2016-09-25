@@ -5,12 +5,15 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.food.rescue.teamxero.pojo.SearchTerm;
@@ -38,6 +41,7 @@ public class HomeActivity extends AppCompatActivity implements OnMarkerClickList
     private List<Provider> mProviderList;
     private LocationProvider mLocationProvider;
     private Marker mCurrentLocation;
+    private FloatingActionButton notifyMe;
 
     //com.google.android.gms_9.6.83_(876-133155058)-9683876_minAPI19(x86)(320dpi)_apkmirror.com
     @Override
@@ -55,6 +59,17 @@ public class HomeActivity extends AppCompatActivity implements OnMarkerClickList
         getSupportActionBar().setTitle(R.string.app_name);
 
         mLocationProvider = new LocationProvider(this, this);
+        notifyMe = (FloatingActionButton) findViewById(R.id.notify_me);
+        notifyMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LatLng newLatlng = new LatLng(mCurrentLocation.getPosition().latitude, mCurrentLocation.getPosition().longitude);
+                new NotifyEnable().execute(newLatlng);
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                ConfirmFragment dialog = new ConfirmFragment();
+                dialog.show(fragmentManager, "DialogWelcome");
+            }
+        });
     }
 
     @Override
@@ -174,8 +189,10 @@ public class HomeActivity extends AppCompatActivity implements OnMarkerClickList
         // Retrieve the data from the marker.
         Provider provider = (Provider) marker.getTag();
         Log.d(TAG, "Provider ID ="+ provider.getFirstName());
-//        Intent intent = new Intent(thi);
-
+        Intent intent = new Intent(this, DetailsActivity.class);
+        String message = provider.getId();
+        intent.putExtra("provider_id", message);
+        startActivity(intent);
         return false;
     }
 
@@ -199,6 +216,20 @@ public class HomeActivity extends AppCompatActivity implements OnMarkerClickList
                 String toastMsg = "Sorry! no results, try another location";
 
             }
+        }
+    }
+
+    private class NotifyEnable extends AsyncTask<LatLng, Void, Boolean>{
+
+        @Override
+        protected Boolean doInBackground(LatLng... latLngs) {
+            ProviderInfo.getsProviderInfo(getApplicationContext()).sendNotifyMeEnable(latLngs[0]);
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aVoid) {
+            super.onPostExecute(aVoid);
         }
     }
 

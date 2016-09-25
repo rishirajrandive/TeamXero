@@ -5,6 +5,8 @@ import android.util.Log;
 
 import com.food.rescue.teamxero.pojo.Address;
 import com.food.rescue.teamxero.pojo.SearchTerm;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,12 +35,17 @@ public class ProviderInfo {
     private static ProviderInfo sProviderInfo;
 
     private List<Provider> mProviderList;
+    private String registrationToken = "";
 
     public static ProviderInfo getsProviderInfo(Context context){
         if(sProviderInfo == null){
             sProviderInfo = new ProviderInfo();
         }
         return sProviderInfo;
+    }
+
+    public ProviderInfo(){
+        registrationToken = FirebaseInstanceId.getInstance().getToken();
     }
 
     public List<Provider> fetchProducts(SearchTerm searchTerm){
@@ -107,7 +114,7 @@ public class ProviderInfo {
         for(int index=0; index<resultArray.length(); index++){
             JSONObject productObject = resultArray.getJSONObject(index);
 
-            Provider provider = new Provider(productObject.getString("contact"),
+            Provider provider = new Provider(productObject.getString("_id"), productObject.getString("contact"),
                     productObject.getBoolean("available"),
                     productObject.getString("foodType"),
                     productObject.getString("quantity"),
@@ -147,5 +154,46 @@ public class ProviderInfo {
             if (lines>0) stringBuffer.append(new String(b, 0, lines));
         }
         return stringBuffer.toString();
+    }
+
+    public Provider getProviderById(String id){
+        for(Provider provider : mProviderList){
+            if(provider.getId().equalsIgnoreCase(id)){
+                return provider;
+            }
+        }
+        return null;
+    }
+
+    public String getRegistrationToken() {
+        if(registrationToken == null){
+            return "";
+        }
+        return registrationToken;
+    }
+
+    public void setRegistrationToken(String registrationToken) {
+        this.registrationToken = registrationToken;
+    }
+
+    public void sendNotifyMeEnable(LatLng latLng){
+        try{
+            //mSearchTerm = URLEncoder.encode(searchTerm, "UTF-8");
+            String requestURL = "https://teamxero.herokuapp.com/notifications";
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("latitude", latLng.latitude);
+            jsonObject.put("longitude", latLng.longitude);
+            jsonObject.put("token", getRegistrationToken());
+            Log.d(TAG, "Value to be sent "+ jsonObject.toString());
+            requestProducts(requestURL, jsonObject);
+        }catch (IllegalStateException ex){
+            Log.e(TAG, "Couldn't fetch data from endpoints "+ ex.getMessage());
+        }catch (IOException ex){
+            Log.e(TAG, "Couldn't fetch data from endpoints " + ex.getMessage());
+        }catch (JSONException ex){
+            Log.e(TAG, "Couldn't parse the data " + ex.getMessage());
+        }catch (Exception ex){
+            Log.e(TAG, "Product fetch failed "+ ex.getMessage());
+        }
     }
 }

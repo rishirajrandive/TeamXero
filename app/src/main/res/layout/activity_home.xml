@@ -31,5 +31,13 @@
         tools:layout="@layout/abc_screen_toolbar"
         android:layout_alignParentTop="true"/>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/notify_me"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="55dp"
+        android:visibility="visible"
+        android:src="@drawable/ic_add_alert_white_24dp" />
 
 </android.support.design.widget.CoordinatorLayout>
