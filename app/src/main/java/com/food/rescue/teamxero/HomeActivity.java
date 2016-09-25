@@ -1,6 +1,7 @@
 package com.food.rescue.teamxero;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -23,6 +24,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.CameraUpdate;
@@ -46,6 +49,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected LocationListener locationListener;
     private List<Provider> mProviderList;
 
+    //com.google.android.gms_9.6.83_(876-133155058)-9683876_minAPI19(x86)(320dpi)_apkmirror.com
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +67,15 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         setLocationListener();
         configureLocationService();
+
+        //Check if google play services is up to date
+        final int playServicesStatus = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this);
+        if(playServicesStatus != ConnectionResult.SUCCESS){
+            //If google play services in not available show an error dialog and return
+            final Dialog errorDialog = GoogleApiAvailability.getInstance().getErrorDialog(this, playServicesStatus, 0, null);
+            errorDialog.show();
+            return;
+        }
 
     }
 
