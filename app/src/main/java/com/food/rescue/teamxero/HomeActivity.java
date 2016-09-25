@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.food.rescue.teamxero.pojo.SearchTerm;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.CameraUpdate;
@@ -51,7 +52,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         getSupportActionBar().setTitle(R.string.app_name);
 
         mLocationProvider = new LocationProvider(this, this);
-
     }
 
     @Override
@@ -82,38 +82,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         mMap.getUiSettings().setCompassEnabled(true);
         mMap.getUiSettings().setZoomControlsEnabled(true);
-
-
-        // Add a marker in Sydney and move the camera
-        //37.3775641,-121.9314487
-        LatLng BRISBANE = new LatLng(-27.47093, 153.0235);
-        LatLng MELBOURNE = new LatLng(-37.81319, 144.96298);
-        LatLng SYDNEY = new LatLng(-33.87365, 151.20689);
-        LatLng ADELAIDE = new LatLng(-34.92873, 138.59995);
-        LatLng PERTH = new LatLng(-31.952854, 115.857342);
-
-
-
-//        mMap.addMarker(new MarkerOptions()
-//                .position(SYDNEY)
-//                .title("Sydney")
-//                .snippet("Population: 4,627,300")
-//                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_cast_dark))
-//                .infoWindowAnchor(0.5f, 0.5f));
-//        mMap.addMarker(new MarkerOptions()
-//                .position(MELBOURNE)
-//                .title("Melbourne")
-//                .snippet("Population: 4,137,400")
-//                .draggable(true));
-//        mMap.addMarker(new MarkerOptions()
-//                .position(PERTH)
-//                .title("Perth")
-//                .snippet("Population: 1,738,800"));
-//        mMap.addMarker(new MarkerOptions()
-//                .position(ADELAIDE)
-//                .title("Adelaide")
-//                .snippet("Population: 1,213,000"));
-        //mMap.animateCamera(CameraUpdateFactory.zoomTo(mMap.getCameraPosition().zoom - 0.5f));
     }
 
     @Override
@@ -175,22 +143,35 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .position(latLng)
                 .title("You location")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 5);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 11);
         mMap.animateCamera(cameraUpdate);
+
+        new FetchProducts().execute(new SearchTerm(latLng.latitude, latLng.longitude, 5));
     }
 
-    private class FetchProducts extends AsyncTask<String, Void, List<Provider>> {
+    private void updateMarkers(){
+        for(Provider provider : mProviderList){
+            LatLng latLng = new LatLng(provider.getLocation().getLatitude(), provider.getLocation().getLongitude());
+            mMap.addMarker(new MarkerOptions()
+                .position(latLng)
+                .title(provider.getFirstName() + " " + provider.getLastName())
+                .snippet(provider.getDescription()));
+        }
+    }
+
+    private class FetchProducts extends AsyncTask<SearchTerm, Void, List<Provider>>{
 
         @Override
-        protected List<Provider> doInBackground(String... params) {
+        protected List<Provider> doInBackground(SearchTerm... searchTerms) {
             // Make call to rest api
-            return null;
+            return ProviderInfo.getsProviderInfo(getApplicationContext()).fetchProducts(searchTerms[0]);
         }
 
         @Override
         protected void onPostExecute(List<Provider> providers) {
             super.onPostExecute(providers);
             mProviderList = providers;
+            updateMarkers();
             //hideProgressDialog();
             if(mProviderList.size() > 0){
                 // populate the MAP

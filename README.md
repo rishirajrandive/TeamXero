@@ -1,2 +1,3 @@
 # TeamXero
-This team is working on Food Rescue app.
+
+This team is contributing to Food Rescue Project.
