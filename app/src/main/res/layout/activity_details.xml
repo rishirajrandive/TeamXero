@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+
+    android:scaleType="fitCenter">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:weightSum="1">
+            <TextView android:id="@+id/distributor_details_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Distributor Details "
+                android:textSize="30dp"
+                android:textStyle="bold"
+
+                />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+                <TextView android:id="@+id/distributor_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="18dp"
+                    android:text="SafeWay"
+                    android:paddingLeft="3dp"
+                    android:paddingTop="10dp"/>
+
+                <TextView android:id="@+id/distributor_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="16dp"
+                    android:text="190 ryland street"
+                    android:paddingLeft="3dp"
+                    android:paddingTop="5dp"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_weight="1">
+
+                    <TextView android:id="@+id/phone_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="05dp"
+                        android:text="PH:"
+                        android:textStyle="bold"
+                        android:paddingLeft="3dp"
+                        android:paddingTop="5dp"/>
+
+                    <TextView android:id="@+id/phone_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="16dp"
+                        android:text="6693223223"
+                        android:paddingLeft="3dp"
+                        android:paddingTop="5dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_weight="1">
+
+                    <TextView android:id="@+id/food_desc_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="05dp"
+                        android:text="Description:"
+                        android:textStyle="bold"
+                        android:paddingLeft="3dp"
+                        android:paddingTop="5dp"/>
+
+                    <TextView android:id="@+id/food_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="16dp"
+                        android:text="Food packets"
+                        android:paddingLeft="3dp"
+                        android:paddingTop="5dp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_weight="1">
+
+                    <TextView android:id="@+id/quantity_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="05dp"
+                        android:text="Quantity:"
+                        android:textStyle="bold"
+                        android:paddingLeft="3dp"
+                        android:paddingTop="5dp"/>
+
+                    <TextView android:id="@+id/quantity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="16dp"
+                        android:text="5"
+                        android:paddingLeft="3dp"
+                        android:paddingTop="5dp"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_weight="1">
+                    <TextView android:id="@+id/expiry_date_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="05dp"
+                        android:text="Expire By"
+                        android:textStyle="bold"
+                        android:paddingLeft="3dp"
+                        android:paddingTop="5dp"/>
+
+
+                    <TextView android:id="@+id/expiry-date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="16dp"
+                        android:text="09/24/2016"
+                        android:paddingLeft="3dp"
+                        android:paddingTop="5dp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <ImageView android:id="@+id/static_map"
+                    android:layout_width="wrap_content"
+                    android:layout_height="210dp"
+                    />
+                <TextView android:id="@+id/restaurant_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:padding="5dp"/>
+            </LinearLayout>
+
+            <Button android:id="@+id/get_direction"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:text="Get Directions"
+                android:textColor="#fff"
+                android:background="@color/colorPrimary" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

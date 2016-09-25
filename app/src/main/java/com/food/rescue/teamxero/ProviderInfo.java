@@ -76,6 +76,7 @@ public class ProviderInfo {
         for(int index=0; index<resultArray.length(); index++){
             JSONObject productObject = resultArray.getJSONObject(index);
             Provider provider = new Provider();
+
             mProviderList.add(provider);
         }
     }
