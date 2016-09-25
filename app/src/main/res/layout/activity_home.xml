@@ -21,22 +21,45 @@
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
-    <fragment
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context="com.food.rescue.teamxero.MapsActivity"
-        tools:layout="@layout/abc_screen_toolbar"
-        android:layout_alignParentTop="true"/>
+        android:layout_height="match_parent">
+        <fragment
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            tools:context="com.food.rescue.teamxero.MapsActivity"
+            tools:layout="@layout/abc_screen_toolbar"
+            android:layout_alignParentTop="true"/>
+        <TextView android:id="@+id/radius"
+            android:layout_below="@id/map"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:textColor="#000"
+            android:text="Get places to eat in 1 miles"/>
+        <SeekBar android:id="@+id/seekbar"
+            android:layout_width="220dp"
+            android:layout_height="20dp"
+            android:max="10"
+            android:progress="1"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/radius"/>
+    </RelativeLayout>
+
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/notify_me"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_margin="55dp"
+        android:layout_gravity="bottom|left"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="15dp"
         android:visibility="visible"
         android:src="@drawable/ic_add_alert_white_24dp" />
 

@@ -51,11 +51,16 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     private void populateData(final Provider provider) {
-        new DownloadImageTask(foodImage).execute(provider.getImageLink());
-        nameView.setText(provider.getFirstName() + " " + provider.getLastName());
-        addressLine1.setText(provider.getAddress().getAddress());
-        addressLine2.setText(provider.getAddress().getCity() + ", " +
-                provider.getAddress().getState() + ", " + provider.getAddress().getZipcode());
+        try{
+            new DownloadImageTask(foodImage).execute(provider.getImageLink());
+            nameView.setText(provider.getFirstName() + " " + provider.getLastName());
+            addressLine1.setText(provider.getAddress().getAddress());
+            addressLine2.setText(provider.getAddress().getCity() + ", " +
+                    provider.getAddress().getState() + ", " + provider.getAddress().getZipcode());
+        }catch(Exception ex){
+            // Do nothing
+        }
+
         callButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

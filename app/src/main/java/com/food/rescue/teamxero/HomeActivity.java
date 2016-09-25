@@ -1,6 +1,7 @@
 package com.food.rescue.teamxero;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.location.Location;
 import android.os.AsyncTask;
@@ -14,6 +15,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.food.rescue.teamxero.pojo.SearchTerm;
@@ -42,6 +45,10 @@ public class HomeActivity extends AppCompatActivity implements OnMarkerClickList
     private LocationProvider mLocationProvider;
     private Marker mCurrentLocation;
     private FloatingActionButton notifyMe;
+    private SeekBar radiusSeekbar;
+    private TextView radiusText;
+    private ProgressDialog mProgressDialog;
+    private int radiusValue;
 
     //com.google.android.gms_9.6.83_(876-133155058)-9683876_minAPI19(x86)(320dpi)_apkmirror.com
     @Override
@@ -70,6 +77,10 @@ public class HomeActivity extends AppCompatActivity implements OnMarkerClickList
                 dialog.show(fragmentManager, "DialogWelcome");
             }
         });
+
+        radiusSeekbar = (SeekBar) findViewById(R.id.seekbar);
+        radiusText = (TextView) findViewById(R.id.radius);
+        setupSeekbarListeners();
     }
 
     @Override
@@ -82,6 +93,14 @@ public class HomeActivity extends AppCompatActivity implements OnMarkerClickList
     protected void onPause() {
         super.onPause();
         mLocationProvider.disconnect();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(mProgressDialog != null){
+            mProgressDialog.dismiss();
+        }
     }
 
 
@@ -100,6 +119,7 @@ public class HomeActivity extends AppCompatActivity implements OnMarkerClickList
 
         mMap.getUiSettings().setCompassEnabled(true);
         mMap.getUiSettings().setZoomControlsEnabled(true);
+
     }
 
     @Override
@@ -124,7 +144,9 @@ public class HomeActivity extends AppCompatActivity implements OnMarkerClickList
                 }
                 return true;
             case R.id.refresh_view:
-                updateCurrentLocation(mCurrentLocation.getPosition());
+                if(mCurrentLocation != null){
+                    updateCurrentLocation(mCurrentLocation.getPosition(), radiusValue);
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -139,7 +161,7 @@ public class HomeActivity extends AppCompatActivity implements OnMarkerClickList
             {
                 Place place = PlacePicker.getPlace(data, this);
                 Log.d(TAG, "Lat long is "+ place.getLatLng());
-                updateCurrentLocation(place.getLatLng());
+                updateCurrentLocation(place.getLatLng(), radiusValue);
 
             }
         }
@@ -152,12 +174,15 @@ public class HomeActivity extends AppCompatActivity implements OnMarkerClickList
             double currentLatitude = location.getLatitude();
             double currentLongitude = location.getLongitude();
             LatLng latLng = new LatLng(currentLatitude, currentLongitude);
-            updateCurrentLocation(latLng);
+            radiusValue = 1;
+            updateCurrentLocation(latLng, radiusValue);
         }
     }
 
-    private void updateCurrentLocation(LatLng latLng){
+    private void updateCurrentLocation(LatLng latLng, int radius){
         Log.d(TAG, "Current location is "+ latLng.latitude + "  " + latLng.longitude);
+        mMap.clear();
+        showProgressDialog();
         if(mCurrentLocation != null){
             mCurrentLocation.remove();
         }
@@ -169,7 +194,7 @@ public class HomeActivity extends AppCompatActivity implements OnMarkerClickList
         mMap.moveCamera(cameraUpdate);
         mMap.animateCamera(cameraUpdate);
 
-        new FetchProducts().execute(new SearchTerm(latLng.latitude, latLng.longitude, 5));
+        new FetchProducts().execute(new SearchTerm(latLng.latitude, latLng.longitude, radius));
     }
 
     private void updateMarkers(){
@@ -181,18 +206,35 @@ public class HomeActivity extends AppCompatActivity implements OnMarkerClickList
                 .snippet(provider.getDescription()));
             marker.setTag(provider);
         }
-        mMap.setOnMarkerClickListener(this);
+        //mMap.setOnMarkerClickListener(this);
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                // Retrieve the data from the marker.
+                Provider provider = (Provider) marker.getTag();
+                if(provider != null){
+                    Log.d(TAG, "Provider ID ="+ provider.getFirstName());
+                    Intent intent = new Intent(getApplicationContext(), DetailsActivity.class);
+                    String message = provider.getId();
+                    intent.putExtra("provider_id", message);
+                    startActivity(intent);
+                }
+            }
+        });
     }
 
     @Override
     public boolean onMarkerClick(final Marker marker) {
         // Retrieve the data from the marker.
-        Provider provider = (Provider) marker.getTag();
-        Log.d(TAG, "Provider ID ="+ provider.getFirstName());
-        Intent intent = new Intent(this, DetailsActivity.class);
-        String message = provider.getId();
-        intent.putExtra("provider_id", message);
-        startActivity(intent);
+//        Provider provider = (Provider) marker.getTag();
+//        if(provider != null){
+//            Log.d(TAG, "Provider ID ="+ provider.getFirstName());
+//            Intent intent = new Intent(this, DetailsActivity.class);
+//            String message = provider.getId();
+//            intent.putExtra("provider_id", message);
+//            startActivity(intent);
+//        }
+
         return false;
     }
 
@@ -209,7 +251,7 @@ public class HomeActivity extends AppCompatActivity implements OnMarkerClickList
             super.onPostExecute(providers);
             mProviderList = providers;
             updateMarkers();
-            //hideProgressDialog();
+            hideProgressDialog();
             if(mProviderList.size() > 0){
                 // populate the MAP
             }else {
@@ -233,4 +275,41 @@ public class HomeActivity extends AppCompatActivity implements OnMarkerClickList
         }
     }
 
+
+    private void setupSeekbarListeners(){
+        radiusSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int progress = 0;
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                progress = i;
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                radiusText.setText("Get places to eat in "+ progress + " miles");
+                radiusValue = progress;
+                updateCurrentLocation(mCurrentLocation.getPosition(), radiusValue);
+            }
+        });
+    }
+
+    private void showProgressDialog(){
+        if(mProgressDialog == null){
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setMessage("Finding food...");
+            mProgressDialog.setIndeterminate(true);
+        }
+        mProgressDialog.show();
+    }
+
+    private void hideProgressDialog(){
+        if(mProgressDialog != null && mProgressDialog.isShowing()){
+            mProgressDialog.hide();
+        }
+    }
 }
