@@ -15,13 +15,13 @@ Our app was selected in top 8 best solutions
 
 ## Below are screen shots for the app:
 
-<img height="300" src="https://raw.githubusercontent.com/Opportunity-Hack-2016-SJC-SVCC/TeamXero/master/demo/home.png" title="Home view for the app" alt="Home view for the app"/>
+<img height="300" src="https://raw.githubusercontent.com/rishirajrandive/TeamXero/master/demo/home.png" title="Home view for the app" alt="Home view for the app"/>
 
-<img height="300" src="https://raw.githubusercontent.com/Opportunity-Hack-2016-SJC-SVCC/TeamXero/master/demo/increase.png" title="Increasing radius to see more options and pop-up on pin" alt="increase"/>
+<img height="300" src="https://raw.githubusercontent.com/rishirajrandive/TeamXero/master/demo/increase.png" title="Increasing radius to see more options and pop-up on pin" alt="increase"/>
 
-<img height="300" src="https://raw.githubusercontent.com/Opportunity-Hack-2016-SJC-SVCC/TeamXero/master/demo/about.png" title="Selecting an option opens details with option to route or call directly" alt="about"/>
+<img height="300" src="https://raw.githubusercontent.com/rishirajrandive/TeamXero/master/demo/about.png" title="Selecting an option opens details with option to route or call directly" alt="about"/>
 
-<img height="300" src="https://raw.githubusercontent.com/Opportunity-Hack-2016-SJC-SVCC/TeamXero/master/demo/getnotified.png" title="Option to get notification for selected location" alt="getnotified"/>
+<img height="300" src="https://raw.githubusercontent.com/rishirajrandive/TeamXero/master/demo/getnotified.png" title="Option to get notification for selected location" alt="getnotified"/>
 
 ## Video walkthrough of app available on [Youtube](https://www.youtube.com/watch?v=HLoPBiouKjs)
 
