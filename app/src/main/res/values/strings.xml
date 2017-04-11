@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TeamXero</string>
+    <string name="app_name">Food Locator</string>
     <string name="title_activity_maps">Map</string>
     <string name="search_title">Search</string>
     <string name="info">Help</string>

@@ -293,7 +293,9 @@ public class HomeActivity extends AppCompatActivity implements OnMarkerClickList
             public void onStopTrackingTouch(SeekBar seekBar) {
                 radiusText.setText("Get places to eat in "+ progress + " miles");
                 radiusValue = progress;
-                updateCurrentLocation(mCurrentLocation.getPosition(), radiusValue);
+                if(mCurrentLocation != null){
+                    updateCurrentLocation(mCurrentLocation.getPosition(), radiusValue);
+                }
             }
         });
     }
