@@ -15,11 +15,20 @@ Our app was selected in top 8 best solutions
 
 ## Below are screen shots for the app:
 
+* Home view for the app
+
 <img height="300" src="https://raw.githubusercontent.com/rishirajrandive/TeamXero/master/demo/home.png" title="Home view for the app" alt="Home view for the app"/>
+
+
+* Increasing radius to see more options and pop-up on pin
 
 <img height="300" src="https://raw.githubusercontent.com/rishirajrandive/TeamXero/master/demo/increase.png" title="Increasing radius to see more options and pop-up on pin" alt="increase"/>
 
+* Selecting an option opens details with option to route or call directly
+
 <img height="300" src="https://raw.githubusercontent.com/rishirajrandive/TeamXero/master/demo/about.png" title="Selecting an option opens details with option to route or call directly" alt="about"/>
+
+* Option to get notification for selected location
 
 <img height="300" src="https://raw.githubusercontent.com/rishirajrandive/TeamXero/master/demo/getnotified.png" title="Option to get notification for selected location" alt="getnotified"/>
 
